@@ -7,7 +7,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """Implement the end-of-file prompt"""
-        return True
+        exit()
 
     def do_quit(self, line):
         """quit the command interpreter"""
