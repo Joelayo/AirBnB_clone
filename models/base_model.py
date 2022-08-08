@@ -3,7 +3,7 @@
 
 from models import storage
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 
 
 class BaseModel:
@@ -13,8 +13,8 @@ class BaseModel:
 
         if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
             storage.new(self)
 
         else:
@@ -33,14 +33,14 @@ class BaseModel:
 
     def save(self):
         """This method updates the updated attribute to the current time"""
+        self.updated_at = datetime.utcnow().isoformat()
         storage.save()
-        self.updated_at = datetime.now()
 
     def to_dict(self):
-        """This method adds the classname the instance"""
+        """This method adds the classname as a key to the instance """
         classkey = {"__class__": self.__class__.__name__}
         obj_dict = self.__dict__
+        obj_dict["created_at"] = self.created_at.isoformat()
+        obj_dict["updated_at"] = self.updated_at.isoformat()
         obj_dict.update(classkey)
-        self.created_at = self.created_at.isoformat()
-        self.updated_at = self.updated_at.isoformat()
         return obj_dict
