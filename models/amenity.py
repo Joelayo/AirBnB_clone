@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-
-
-from base_model import BaseModel
+#!/usr/bin/python3
+"""Contains the Amenity model"""
+from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    def __init__(self):
-        self.name = ""
+    """Implements the Amenity model"""
+    name = ""

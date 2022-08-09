@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""Module for State class."""
 
-
-from base_model import BaseModel
+from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    def __init__(self):
-        self.name = ""
+    """Class representing a State."""
+    name = ""
