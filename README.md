@@ -1,7 +1,6 @@
 # AirBnB Clone
 This repo contains ALX SE Program Project 0x00. AirBnB clone - The console for the participant contributors:
 
-## Usage
 
 The console works both in interactive mode and non-interactive mode, much like a Unix shell.
 It prints a prompt **(hbnb)** and waits for the user for input.
@@ -49,19 +48,13 @@ A FileStorage class is defined in [file_storage.py](./models/engine/file_storage
 ```<object> -> to_dict() -> <dictionary> -> JSON dump -> <json string> -> FILE -> <json string> -> JSON load -> <dictionary> -> <object>```
 The [__init__.py](./models/__init__.py) file contains the instantiation of the FileStorage class called **storage**, followed by a call to the method reload() on that instance.
 This allows the storage to be reloaded automatically at initialization, which recovers the serialized data.
-
 ## Tests
 All the code is tested with the **unittest** module.
 The test for the classes are in the [test_models](./tests/test_models/) folder.
-
 # Contributing Guide 
-
 1. [Fix] - Represent a bug fix, format - `[Fix]: Bug Fixed`
 2. [Style] - Represent a fix for code style compliance, format - `[Style]: New line at the end of file console.py`
 3. [Feat] - Represent a new file, or fuction that adds a feature, format - `[Feat]: Enable printing errors`
 4. [Update] - Represent a generric update (Usually for testing).
-
 # Authors
 * [Joel Oduyemi](https://github.com/joelayo) ~ [LinkedIn](https://www.linkedin.com/in/joel-oduyemi/)
-* [Favour Abangwu](https://github.com/favvie)
-
