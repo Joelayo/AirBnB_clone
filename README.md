@@ -1,7 +1,7 @@
 # AirBnB Clone
 This repo contains ALX SE Program Project 0x00. AirBnB clone - The console for the participant contributors:
 
-
+## Usage
 The console works both in interactive mode and non-interactive mode, much like a Unix shell.
 It prints a prompt **(hbnb)** and waits for the user for input.
 
