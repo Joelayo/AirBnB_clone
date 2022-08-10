@@ -1,46 +1,36 @@
-#!/usr/bin/python3
-"""Module for Base class
-Contains the Base class for the AirBnB clone console.
-"""
+#!/usr/bin/env python3
+"""This module contains a class called BaseModel"""
 
+
+import models
 import uuid
 from datetime import datetime
-import models
 
 
 class BaseModel:
-
-    """Class for base model of object hierarchy."""
-
+    """ a class called basemodel used to create a basemodel """
     def __init__(self, *args, **kwargs):
-        """Initialization of a Base instance.
-        Args:
-            - *args: list of arguments
-            - **kwargs: dict of key-values arguments
-        """
+        """this initialization method adds an id, and created_at attributes"""
 
-        if kwargs is not None and kwargs != {}:
-            for key in kwargs:
-                if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[key] = kwargs[key]
-        else:
+        if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
             models.storage.new(self)
 
-    def __str__(self):
-        """Returns a human-readable string representation
-        of an instance."""
+        else:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
+                elif key == "created_at" or key == "updated_at":
+                    setattr(self, key, datetime.fromisoformat(value))
+                else:
+                    setattr(self, key, value)
 
-        return "[{}] ({}) {}".\
-            format(type(self).__name__, self.id, self.__dict__)
+    def __str__(self):
+        """This method overwrites the default str method"""
+        return "[{}] ({}) {}"\
+            .format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """This method updates the updated attribute to the current time"""
