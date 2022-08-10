@@ -1,8 +1,13 @@
 #!/usr/bin/python3
-"""Module for FileStorage class."""
-import datetime
-import json
+"""This module contains the methods and attributes \
+    for the file storage class"""
+
+
 import os
+import json
+from models.base_model import BaseModel
+from models.user import User
+from datetime import datetime
 
 
 class FileStorage:
@@ -12,86 +17,43 @@ class FileStorage:
     __objects = {}
 
     def all(self):
-        """Returns __objects dictionary."""
-        # TODO: should this be a copy()?
+        """this method return all the key-value pairs stored in __objects"""
         return FileStorage.__objects
 
     def new(self, obj):
-        """Sets new obj in __objects dictionary."""
-        # TODO: should these be more precise specifiers?
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        """The function adds a new instance to __objects dictionary"""
+        FileStorage.__objects[obj.__class__.__name__+"."+obj.id] \
+            = obj
 
     def save(self):
-        """Serialzes __objects to JSON file."""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            d = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
-            json.dump(d, f)
-
-    def classes(self):
-        """Returns a dictionary of valid classes and their references."""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {"BaseModel": BaseModel,
-                   "User": User,
-                   "State": State,
-                   "City": City,
-                   "Amenity": Amenity,
-                   "Place": Place,
-                   "Review": Review}
-        return classes
+        """This function unpacks the __objects dict into a json file"""
+        # serialize the FileStorage.__objects into json
+        temp = {}
+        for key in FileStorage.__objects.keys():
+            temp[key] = FileStorage.__objects[key].to_dict()
+        with open(FileStorage.__file_path, "w", encoding="utf-8") as file:
+            json.dump(temp, file)
 
     def reload(self):
-        """Deserializes JSON file into __objects."""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
-            # TODO: should this overwrite or insert?
-            FileStorage.__objects = obj_dict
+        """This function unpacks the json file into the __objects dict"""
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'r', encoding="utf-8") as file:
+                # FileStorage.__objects = json.load(file)
+                # this is a dictionary
+                dict_form = json.load(file)
+                dict = {}
+                for key in dict_form.keys():
+                    split_key = key.split(".")
+                    if split_key[0] == "BaseModel":
+                        # this is a dict of the object
+                        value = dict_form[key]
+                        # create a class using the dict
+                        new_class = BaseModel(**value)
+                        dict[key] = new_class
+                    elif split_key[0] == "User":
+                        value = dict_form[key]
+                        # create a class using the dict
+                        new_class = User(**value)
+                        dict[key] = new_class
 
-    def attributes(self):
-        """Returns the valid attributes and their types for classname."""
-        attributes = {
-            "BaseModel":
-                     {"id": str,
-                      "created_at": datetime.datetime,
-                      "updated_at": datetime.datetime},
-            "User":
-                     {"email": str,
-                      "password": str,
-                      "first_name": str,
-                      "last_name": str},
-            "State":
-                     {"name": str},
-            "City":
-                     {"state_id": str,
-                      "name": str},
-            "Amenity":
-                     {"name": str},
-            "Place":
-                     {"city_id": str,
-                      "user_id": str,
-                      "name": str,
-                      "description": str,
-                      "number_rooms": int,
-                      "number_bathrooms": int,
-                      "max_guest": int,
-                      "price_by_night": int,
-                      "latitude": float,
-                      "longitude": float,
-                      "amenity_ids": list},
-            "Review":
-            {"place_id": str,
-                         "user_id": str,
-                         "text": str}
-        }
-        return attributes
+                FileStorage.__objects = dict
