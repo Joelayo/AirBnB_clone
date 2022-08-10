@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """This module contains the methods and attributes \
     for the file storage class"""
 
@@ -10,15 +10,9 @@ from models.user import User
 from datetime import datetime
 
 
-# class ObjectJSONEncoder(json.JSONEncoder):
-#     def default(self, obj):
-#         obj.created_at = datetime.isoformat(obj.created_at)
-#         obj.updated_at = datetime.isoformat(obj.updated_at)
-#         return obj.__dict__
-
-
 class FileStorage:
 
+    """Class for serializtion and deserialization of base classes."""
     __file_path = "file.json"
     __objects = {}
 

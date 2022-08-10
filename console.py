@@ -18,12 +18,15 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
     def do_EOF(self, line):
-        """Implement the end-of-file prompt"""
-        exit()
+        """Handles End Of File character.
+        """
+        print()
+        return True
 
     def do_quit(self, line):
-        """quit the command interpreter"""
-        exit()
+        """Exits the program.
+        """
+        return True
 
     def emptyline(self):
         """This overwrites the emptyline function"""
@@ -167,5 +170,5 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     HBNBCommand().cmdloop()
