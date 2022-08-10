@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """This module contains a class called BaseModel"""
 
-from models import storage
+
+import models
 import uuid
-from datetime import datetime, date
+from datetime import datetime
 
 
 class BaseModel:
@@ -15,7 +16,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
-            storage.new(self)
+            models.storage.new(self)
 
         else:
             for key, value in kwargs.items():
@@ -33,14 +34,13 @@ class BaseModel:
 
     def save(self):
         """This method updates the updated attribute to the current time"""
-        self.updated_at = datetime.utcnow().isoformat()
-        storage.save()
+        self.updated_at = datetime.utcnow()
+        models.storage.save()
 
     def to_dict(self):
         """This method adds the classname as a key to the instance """
-        classkey = {"__class__": self.__class__.__name__}
-        obj_dict = self.__dict__
-        obj_dict["created_at"] = self.created_at.isoformat()
-        obj_dict["updated_at"] = self.updated_at.isoformat()
-        obj_dict.update(classkey)
+        obj_dict = self.__dict__.copy()
+        obj_dict["created_at"] = datetime.isoformat(self.created_at)
+        obj_dict["updated_at"] = datetime.isoformat(self.updated_at)
+        obj_dict["__class__"]: self.__class__.__name__
         return obj_dict
